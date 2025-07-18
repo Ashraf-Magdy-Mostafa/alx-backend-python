@@ -8,7 +8,7 @@ from client import GithubOrgClient
 
 
 class TestGithubOrgClient(unittest.TestCase):
-    """Test GithubOrgClient.org property."""
+    """Unit tests for GithubOrgClient."""
 
     @parameterized.expand([
         ("google",),
@@ -28,16 +28,39 @@ class TestGithubOrgClient(unittest.TestCase):
         self.assertEqual(result, test_payload)
 
     def test_public_repos_url(self):
-        """Test GithubOrgClient._public_repos_url property returns repos_url from org."""
+        """Test that _public_repos_url returns repos_url from .org property."""
         expected_url = "https://api.github.com/orgs/google/repos"
         mocked_org_payload = {"repos_url": expected_url}
-
         client = GithubOrgClient("google")
 
-        # Patch the 'org' property to return our mocked_org_payload
         with patch.object(GithubOrgClient, "org", new_callable=property) as mock_org:
             mock_org.return_value = mocked_org_payload
-
-            # Now accessing _public_repos_url should use the mocked org property
             result = client._public_repos_url
             self.assertEqual(result, expected_url)
+
+    @patch("client.get_json")
+    def test_public_repos(self, mock_get_json):
+        """Test that public_repos returns correct repo names list."""
+        test_repos_payload = [
+            {"name": "repo1", "license": {"key": "apache-2.0"}},
+            {"name": "repo2", "license": {"key": "mit"}},
+            {"name": "repo3"},
+        ]
+        mock_get_json.return_value = test_repos_payload
+
+        client = GithubOrgClient("test_org")
+        test_url = "https://api.github.com/orgs/test_org/repos"
+
+        with patch.object(GithubOrgClient, "_public_repos_url", new_callable=property) as mock_public_repos_url:
+            mock_public_repos_url.return_value = test_url
+
+            repos = client.public_repos()
+            expected_repos = ["repo1", "repo2", "repo3"]
+            self.assertEqual(repos, expected_repos)
+
+            mock_public_repos_url.assert_called_once()
+            mock_get_json.assert_called_once_with(test_url)
+
+
+if __name__ == "__main__":
+    unittest.main()
