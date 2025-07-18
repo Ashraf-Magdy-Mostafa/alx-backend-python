@@ -9,6 +9,7 @@ class CustomUser(AbstractUser):
         primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(max=255)
     last_name = models.CharField(max=255)
+    password = models.CharField(max_length=128)
     phone_number = models.CharField(max_length=20, blank=True)
     created_at = models.DateTimeField(auto_now=True)
 
