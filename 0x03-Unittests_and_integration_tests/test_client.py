@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-"""Unit tests for the GithubOrgClient class."""
+"""Unit and Integration tests for the GithubOrgClient class."""
 
-from fixtures import TEST_PAYLOAD
-from parameterized import parameterized_class
-from unittest.mock import patch, MagicMock
 import unittest
-from unittest.mock import patch, Mock, PropertyMock
-from parameterized import parameterized
+from unittest.mock import patch, Mock, PropertyMock, MagicMock
+from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
+from fixtures import TEST_PAYLOAD
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -36,9 +34,7 @@ class TestGithubOrgClient(unittest.TestCase):
         mocked_org_payload = {"repos_url": expected_url}
         client = GithubOrgClient("google")
 
-        with patch.object(
-            GithubOrgClient, "org", new_callable=PropertyMock
-        ) as mock_org:
+        with patch.object(GithubOrgClient, "org", new_callable=PropertyMock) as mock_org:
             mock_org.return_value = mocked_org_payload
             result = client._public_repos_url
             self.assertEqual(result, expected_url)
@@ -56,11 +52,7 @@ class TestGithubOrgClient(unittest.TestCase):
         client = GithubOrgClient("test_org")
         test_url = "https://api.github.com/orgs/test_org/repos"
 
-        with patch.object(
-            GithubOrgClient,
-            "_public_repos_url",
-            new_callable=PropertyMock
-        ) as mock_public_repos_url:
+        with patch.object(GithubOrgClient, "_public_repos_url", new_callable=PropertyMock) as mock_public_repos_url:
             mock_public_repos_url.return_value = test_url
 
             repos = client.public_repos()
@@ -79,10 +71,6 @@ class TestGithubOrgClient(unittest.TestCase):
         client = GithubOrgClient("test_org")
         result = client.has_license(repo, license_key)
         self.assertEqual(result, expected)
-
-
-#!/usr/bin/env python3
-"""Integration test for GithubOrgClient.public_repos."""
 
 
 @parameterized_class([
