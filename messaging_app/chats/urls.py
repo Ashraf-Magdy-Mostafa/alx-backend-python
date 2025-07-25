@@ -2,6 +2,10 @@ from django.urls import path, include
 from rest_framework import routers
 from rest_framework_nested.routers import NestedDefaultRouter
 from .views import ConversationViewSet, MessageViewSet
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 # Root router for conversations
 router = routers.DefaultRouter()
@@ -16,4 +20,8 @@ conversations_router.register(
 urlpatterns = [
     path('', include(router.urls)),
     path('', include(conversations_router.urls)),
+
+    # JWT Authentication endpoints
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

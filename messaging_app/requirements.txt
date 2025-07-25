@@ -1,2 +1,3 @@
 djangorestframework
 drf-nested-routers
+djangorestframework-simplejwt

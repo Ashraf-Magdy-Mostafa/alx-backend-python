@@ -19,8 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email',
-                  'first_name', 'last_name', 'phone_number', 'full_name']
+        fields = "__all__"
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -34,8 +33,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ['id', 'conversation', 'sender',
-                  'message_body', 'sent_at', 'preview']
+        fields = "__all__"
 
 
 class ConversationSerializer(serializers.ModelSerializer):
@@ -56,4 +54,4 @@ class ConversationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Conversation
-        fields = ['id', 'participants', 'created_at', 'messages']
+        fields = "__all__"
