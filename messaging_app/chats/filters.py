@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from .models import Message
+from .models import Message, Conversation
 
 
 class MessageFilter(filters.FilterSet):
@@ -12,3 +12,12 @@ class MessageFilter(filters.FilterSet):
     class Meta:
         model = Message
         fields = ['sender', 'start_time', 'end_time']
+
+
+class ConversationFilter(filters.FilterSet):
+    created_at = filters.DateTimeFilter(
+        field_name='created_at', lookup_expr='gte')
+
+    class Meta:
+        model = Conversation
+        fields = ['created_at']

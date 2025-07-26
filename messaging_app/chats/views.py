@@ -1,10 +1,27 @@
-from rest_framework import viewsets, filters, status
+from rest_framework import viewsets, filters, status, permissions
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .models import Conversation, Message
-from .serializers import ConversationSerializer, MessageSerializer
-from .permissions import IsParticipant  # Ensure this exists
-from .filters import MessageFilter
+from .models import Conversation, Message, CustomUser
+from .serializers import ConversationSerializer, MessageSerializer, UserSerializer
+from .permissions import IsParticipantOfConversation  # Ensure this exists
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import MessageFilter, ConversationFilter
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for managing users.
+    - List users
+    - Retrieve user details
+    - Create new user (registration)
+    """
+    queryset = CustomUser.objects.all()
+    serializer_class = UserSerializer
+
+    def get_permissions(self):
+        if self.action == 'create':
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
 
 
 class ConversationViewSet(viewsets.ModelViewSet):
@@ -13,9 +30,9 @@ class ConversationViewSet(viewsets.ModelViewSet):
     Only participants can view or create conversations.
     """
     serializer_class = ConversationSerializer
-    permission_classes = [IsAuthenticated, IsParticipant]
+    permission_classes = [IsAuthenticated, IsParticipantOfConversation]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_class = MessageFilter
+    filterset_class = ConversationFilter
 
     ordering_fields = ['created_at']
 
@@ -31,8 +48,9 @@ class ConversationViewSet(viewsets.ModelViewSet):
 
 class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
-    permission_classes = [IsAuthenticated, IsParticipant]
+    permission_classes = [IsAuthenticated, IsParticipantOfConversation]
     filter_backends = [filters.OrderingFilter]
+    filterset_class = MessageFilter
     ordering_fields = ['sent_at']
 
     def get_queryset(self):

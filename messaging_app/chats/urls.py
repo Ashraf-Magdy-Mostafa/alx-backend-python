@@ -3,15 +3,21 @@
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework_nested.routers import NestedDefaultRouter
-from .views import ConversationViewSet, MessageViewSet
+# ✅ Include UserViewSet
+from .views import ConversationViewSet, MessageViewSet, UserViewSet
 
+# Root router
 router = routers.DefaultRouter()
+router.register(r'users', UserViewSet, basename='user')  # ✅ Add user viewset
 router.register(r'conversations', ConversationViewSet, basename='conversation')
 
+# Nested router for messages inside conversations
 conversations_router = NestedDefaultRouter(
-    router, r'conversations', lookup='conversation')
+    router, r'conversations', lookup='conversation'
+)
 conversations_router.register(
-    r'messages', MessageViewSet, basename='conversation-messages')
+    r'messages', MessageViewSet, basename='conversation-messages'
+)
 
 urlpatterns = [
     path('', include(router.urls)),

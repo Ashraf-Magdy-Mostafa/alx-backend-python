@@ -1,25 +1,35 @@
 from rest_framework import serializers
 from django.conf import settings
 from .models import Conversation, Message
+from django.contrib.auth import get_user_model
+
 
 # Reference the custom user model via settings.AUTH_USER_MODEL
-User = settings.AUTH_USER_MODEL
+
+User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """
-    Serializer for the CustomUser model.
-    Exposes core user fields.
-    Adds a computed full_name field using SerializerMethodField.
-    """
     full_name = serializers.SerializerMethodField()
+    password = serializers.CharField(write_only=True)
 
     def get_full_name(self, obj):
         return f"{obj.first_name} {obj.last_name}".strip()
 
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data.get('email'),
+            password=validated_data['password'],
+            first_name=validated_data.get('first_name', ''),
+            last_name=validated_data.get('last_name', ''),
+            phone_number=validated_data.get('phone_number', '')
+        )
+        return user
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email',
+        fields = ['user_id', 'username', 'email', 'password',
                   'first_name', 'last_name', 'phone_number', 'full_name']
 
 
