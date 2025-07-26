@@ -15,6 +15,7 @@ class UserViewSet(viewsets.ModelViewSet):
     - Retrieve user details
     - Create new user (registration)
     """
+    permission_classes = [IsAuthenticated]
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
