@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .models import Conversation, Message
 from .serializers import ConversationSerializer, MessageSerializer
 from .permissions import IsParticipant  # Ensure this exists
+from .filters import MessageFilter
 
 
 class ConversationViewSet(viewsets.ModelViewSet):
@@ -13,7 +14,9 @@ class ConversationViewSet(viewsets.ModelViewSet):
     """
     serializer_class = ConversationSerializer
     permission_classes = [IsAuthenticated, IsParticipant]
-    filter_backends = [filters.OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_class = MessageFilter
+
     ordering_fields = ['created_at']
 
     def get_queryset(self):
