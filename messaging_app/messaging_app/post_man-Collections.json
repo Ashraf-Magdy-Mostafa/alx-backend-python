@@ -5,30 +5,17 @@
 		"description": "Collection to test authentication, conversation creation, and messaging.EndFragment",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "47090625",
-		"_collection_link": "https://ashraf-magdy-mostafa-5814883.postman.co/workspace/Ashraf-Magdy-Mostafa-Gaber's-Wo~55275414-14d4-4ef2-86ae-03a0f96afd40/collection/47090625-8f3c146f-ff38-484b-9417-173dda93544a?action=share&source=collection_link&creator=47090625"
+		"_collection_link": "https://ashraf-magdy-mostafa-5814883.postman.co/workspace/55275414-14d4-4ef2-86ae-03a0f96afd40/collection/47090625-8f3c146f-ff38-484b-9417-173dda93544a?action=share&source=collection_link&creator=47090625"
 	},
 	"item": [
 		{
 			"name": "CREATE New User",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUzNTQ2MDA1LCJpYXQiOjE3NTM1NDI0MDUsImp0aSI6IjRlMGM4YzI1MmUxNzRlZDBiMjhmYzVjYTM1NTMyOTI1IiwidXNlcl9pZCI6IjgxMWJiMTgxLTJkYmMtNDhkMy1iNjIxLWNmM2M0NTY4NTc5MSJ9.4Fa5Gal2e-nKU6G2w5XVMlLqjVNks9vChs55Ou_hpFI",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
+				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"username\": \"ahmedabdo\",\r\n  \"email\": \"abdo@example.com\",\r\n  \"password\": \"strongpass123\",\r\n  \"first_name\": \"ahmed\",\r\n  \"last_name\": \"abdo\",\r\n  \"phone_number\": \"0123456789\"\r\n}",
+					"raw": "{\r\n  \"username\": \"roqiaahmed\",\r\n  \"email\": \"roqia@example.com\",\r\n  \"password\": \"strongpass123\",\r\n  \"first_name\": \"Roqia\",\r\n  \"last_name\": \"Ahmed\",\r\n  \"phone_number\": \"0123456789\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -57,136 +44,16 @@
 		{
 			"name": "Get Token / Login",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUzNTQ2MDA1LCJpYXQiOjE3NTM1NDI0MDUsImp0aSI6IjRlMGM4YzI1MmUxNzRlZDBiMjhmYzVjYTM1NTMyOTI1IiwidXNlcl9pZCI6IjgxMWJiMTgxLTJkYmMtNDhkMy1iNjIxLWNmM2M0NTY4NTc5MSJ9.4Fa5Gal2e-nKU6G2w5XVMlLqjVNks9vChs55Ou_hpFI",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"username\": \"ahmedabdo\",\r\n  \"password\": \"strongpass123\"\r\n  \r\n  \r\n \r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/api/token/",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"token",
-						""
-					]
-				}
+				"method": "GET",
+				"header": []
 			},
 			"response": []
 		},
 		{
 			"name": "Conversation",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUzNTQ2MDA1LCJpYXQiOjE3NTM1NDI0MDUsImp0aSI6IjRlMGM4YzI1MmUxNzRlZDBiMjhmYzVjYTM1NTMyOTI1IiwidXNlcl9pZCI6IjgxMWJiMTgxLTJkYmMtNDhkMy1iNjIxLWNmM2M0NTY4NTc5MSJ9.4Fa5Gal2e-nKU6G2w5XVMlLqjVNks9vChs55Ou_hpFI",
-							"type": "string"
-						}
-					]
-				},
 				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"participants\": [\"ahmedabdo\"]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/api/conversations",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"conversations"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Messages",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUzNTQ2MDA1LCJpYXQiOjE3NTM1NDI0MDUsImp0aSI6IjRlMGM4YzI1MmUxNzRlZDBiMjhmYzVjYTM1NTMyOTI1IiwidXNlcl9pZCI6IjgxMWJiMTgxLTJkYmMtNDhkMy1iNjIxLWNmM2M0NTY4NTc5MSJ9.4Fa5Gal2e-nKU6G2w5XVMlLqjVNks9vChs55Ou_hpFI",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"message_body\": \"Hello \"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/api/conversations/93031f77-0a6c-4b2e-bc4c-61f656f7fcae/messages/",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"conversations",
-						"93031f77-0a6c-4b2e-bc4c-61f656f7fcae",
-						"messages",
-						""
-					]
-				}
+				"header": []
 			},
 			"response": []
 		}
