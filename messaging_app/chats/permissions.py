@@ -11,5 +11,12 @@ class IsParticipantOfConversation(BasePermission):
         return request.user and request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        # For view, update, delete actions: check participant status
-        return request.user in obj.participants.all()
+        # Only allow object access for authenticated participants
+        if request.user not in obj.participants.all():
+            return False
+
+        # Explicitly check request method for modify actions
+        if request.method in ["PUT", "PATCH", "DELETE", "GET"]:
+            return True
+
+        return False  # Disallow unsafe methods by default
