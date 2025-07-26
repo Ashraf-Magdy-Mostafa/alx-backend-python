@@ -1,0 +1,61 @@
+{
+	"info": {
+		"_postman_id": "8f3c146f-ff38-484b-9417-173dda93544a",
+		"name": "ALX-Messaging_App",
+		"description": "Collection to test authentication, conversation creation, and messaging.EndFragment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47090625",
+		"_collection_link": "https://ashraf-magdy-mostafa-5814883.postman.co/workspace/55275414-14d4-4ef2-86ae-03a0f96afd40/collection/47090625-8f3c146f-ff38-484b-9417-173dda93544a?action=share&source=collection_link&creator=47090625"
+	},
+	"item": [
+		{
+			"name": "CREATE New User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"roqiaahmed\",\r\n  \"email\": \"roqia@example.com\",\r\n  \"password\": \"strongpass123\",\r\n  \"first_name\": \"Roqia\",\r\n  \"last_name\": \"Ahmed\",\r\n  \"phone_number\": \"0123456789\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Token / Login",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Conversation",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
