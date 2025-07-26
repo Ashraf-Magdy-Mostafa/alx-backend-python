@@ -14,3 +14,5 @@ D:\myporto\alx-backend-python\Django-Middleware-0x03\chats\middleware.py changed
 D:\myporto\alx-backend-python\Django-Middleware-0x03\messaging_app\settings.py changed, reloading.
 2025-07-26 22:52:25.319396 - User: aa - Path: /api/conversations/93031f77-0a6c-4b2e-bc4c-61f656f7fcae/messages/
 2025-07-26 22:53:06.840444 - User: ahmedabdo - Path: /api/users/
+2025-07-26 23:06:43.622195 - User: ahmedabdo - Path: /api/users/
+Forbidden: /api/users/

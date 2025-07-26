@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from uuid import UUID
 import logging
 from datetime import datetime
+from django.http import HttpResponseForbidden
 
 User = get_user_model()
 
@@ -41,5 +42,25 @@ class RequestLoggingMiddleware:
 
         log_message = f"{datetime.now()} - User: {user} - Path: {request.path}"
         logging.info(log_message)
+
+        return self.get_response(request)
+
+
+# Restrict access from 6 to 9 pm
+
+
+class RestrictAccessByTimeMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        now = datetime.now().time()
+
+        # Define allowed time window: 18:00 to 21:00
+        start_time = datetime.strptime("18:00", "%H:%M").time()
+        end_time = datetime.strptime("21:00", "%H:%M").time()
+
+        if not (start_time <= now <= end_time):
+            return HttpResponseForbidden("Chat is only accessible between 6 PM and 9 PM.")
 
         return self.get_response(request)
