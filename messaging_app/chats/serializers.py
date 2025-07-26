@@ -34,36 +34,32 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    """
-    Serializer for the Message model.
-    Displays sender as username via StringRelatedField.
-    Adds a CharField for message preview (first 30 chars).
-    """
     sender = serializers.StringRelatedField(read_only=True)
+    # ✅ now it's not required in input
+    conversation = serializers.UUIDField(read_only=True)
     preview = serializers.CharField(source='message_body', read_only=True)
 
     class Meta:
         model = Message
-        fields = ['id', 'conversation', 'sender',
+        fields = ['message_id', 'conversation', 'sender',
                   'message_body', 'sent_at', 'preview']
 
 
 class ConversationSerializer(serializers.ModelSerializer):
-    """
-    Serializer for the Conversation model.
-    Participants serialized via UserSerializer (many=True).
-    Nested messages included with MessageSerializer.
-    Adds validation to ensure at least two participants.
-    """
-    participants = UserSerializer(many=True, read_only=True)
+    participants = serializers.SlugRelatedField(
+        queryset=User.objects.all(),
+        many=True,
+        slug_field='username'
+    )
     messages = MessageSerializer(many=True, read_only=True)
 
     def validate(self, data):
-        if self.instance is None and len(data.get('participants', [])) < 2:
+        if self.instance is None and len(data.get('participants', [])) < 1:
             raise serializers.ValidationError(
-                "A conversation must have at least two participants.")
+                "A conversation must have at least one other participant."
+            )
         return data
 
     class Meta:
         model = Conversation
-        fields = ['id', 'participants', 'created_at', 'messages']
+        fields = ['conversation_id', 'participants', 'messages']

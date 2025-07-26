@@ -58,10 +58,11 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         # ✅ Explicit checker-required use of `conversation_id`
-        conversation_id = self.request.data.get("conversation_id")
+        conversation_id = self.kwargs.get("conversation_pk")
 
         try:
-            conversation = Conversation.objects.get(id=conversation_id)
+            conversation = Conversation.objects.get(
+                conversation_id=conversation_id)
         except Conversation.DoesNotExist:
             return Response(
                 {"error": "Conversation not found"},
