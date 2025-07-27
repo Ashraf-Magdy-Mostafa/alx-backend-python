@@ -16,3 +16,36 @@ D:\myporto\alx-backend-python\Django-Middleware-0x03\messaging_app\settings.py c
 2025-07-26 22:53:06.840444 - User: ahmedabdo - Path: /api/users/
 2025-07-26 23:06:43.622195 - User: ahmedabdo - Path: /api/users/
 Forbidden: /api/users/
+2025-07-27 07:48:40.610272 - User: Anonymous - Path: /
+Forbidden: /
+2025-07-27 07:48:40.618676 - User: Anonymous - Path: /
+Forbidden: /
+2025-07-27 07:48:40.685842 - User: Anonymous - Path: /favicon.ico
+Forbidden: /favicon.ico
+2025-07-27 07:48:40.754428 - User: Anonymous - Path: /favicon.ico
+Forbidden: /favicon.ico
+2025-07-27 07:48:45.252989 - User: Anonymous - Path: /admin/
+Forbidden: /admin/
+2025-07-27 07:48:45.279590 - User: Anonymous - Path: /favicon.ico
+Forbidden: /favicon.ico
+2025-07-27 07:48:48.650333 - User: Anonymous - Path: /admin/
+Forbidden: /admin/
+2025-07-27 07:48:48.708577 - User: Anonymous - Path: /favicon.ico
+Forbidden: /favicon.ico
+D:\myporto\alx-backend-python\Django-Middleware-0x03\chats\middleware.py changed, reloading.
+2025-07-27 07:49:44.017780 - User: Anonymous - Path: /
+Forbidden: /
+2025-07-27 07:49:44.100283 - User: Anonymous - Path: /favicon.ico
+Forbidden: /favicon.ico
+2025-07-27 07:49:46.338613 - User: Anonymous - Path: /
+Forbidden: /
+2025-07-27 07:49:46.361286 - User: Anonymous - Path: /favicon.ico
+Forbidden: /favicon.ico
+2025-07-27 07:49:50.987110 - User: Anonymous - Path: /admin/
+Forbidden: /admin/
+2025-07-27 07:49:51.017954 - User: Anonymous - Path: /favicon.ico
+Forbidden: /favicon.ico
+D:\myporto\alx-backend-python\Django-Middleware-0x03\chats\middleware.py changed, reloading.
+D:\myporto\alx-backend-python\Django-Middleware-0x03\chats\middleware.py changed, reloading.
+D:\myporto\alx-backend-python\Django-Middleware-0x03\messaging_app\settings.py changed, reloading.
+D:\myporto\alx-backend-python\Django-Middleware-0x03\messaging_app\settings.py changed, reloading.

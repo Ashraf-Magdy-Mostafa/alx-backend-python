@@ -108,3 +108,42 @@ class OffensiveLanguageMiddleware:
             return x_forwarded_for.split(',')[0].strip()
         # Else, use the normal IP address
         return request.META.get('REMOTE_ADDR', '')
+
+
+class RolepermissionMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Check if the user is logged in
+        if request.user.is_authenticated:
+            # Get user role (you may use user.role or user.groups or custom logic)
+            user = request.user
+            # assumes you have a 'role' field
+            user_role = getattr(user, "role", None)
+
+            # Allow only if role is 'admin' or 'moderator'
+            if user_role not in ['admin', 'moderator']:
+                return HttpResponseForbidden("Access denied. Only admins or moderators are allowed.")
+        else:
+            # If not logged in, deny access
+            return HttpResponseForbidden("Authentication required.")
+
+        # Allow the request to continue
+        return self.get_response(request)
+
+
+class RolepermissionMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Block if not logged in
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden("You must be logged in.")
+
+        # Check if user is in 'admin' or 'moderator' group
+        if not request.user.groups.filter(name__in=['admin', 'moderator']).exists():
+            return HttpResponseForbidden("Only admins or moderators can access this.")
+
+        return self.get_response(request)
