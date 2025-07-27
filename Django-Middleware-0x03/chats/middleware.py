@@ -1,3 +1,4 @@
+import time
 from jwt import decode, InvalidTokenError
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -64,3 +65,46 @@ class RestrictAccessByTimeMiddleware:
             return HttpResponseForbidden("Chat is only accessible between 6 PM and 9 PM.")
 
         return self.get_response(request)
+
+
+# This dictionary keeps track of requests from each IP address
+message_counter = {}
+
+
+class OffensiveLanguageMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Only check POST requests (usually used to send messages)
+        if request.method == "POST":
+            ip_address = self.get_client_ip(request)
+            current_time = time.time()  # Get current time in seconds
+
+            # Get the list of timestamps for this IP (or empty list if not found)
+            request_times = message_counter.get(ip_address, [])
+
+            # Keep only the timestamps from the last 60 seconds (1 minute)
+            request_times = [t for t in request_times if current_time - t < 60]
+
+            # Check if the user sent more than 5 messages in the last minute
+            if len(request_times) >= 5:
+                return HttpResponseForbidden("❌ Too many messages! Try again in a minute.")
+
+            # Add this request's timestamp to the list
+            request_times.append(current_time)
+
+            # Save the updated list back to the dictionary
+            message_counter[ip_address] = request_times
+
+        # Continue to the next middleware or view
+        return self.get_response(request)
+
+    def get_client_ip(self, request):
+        # Check if there's a proxy or load balancer
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            # Use the first IP in the list
+            return x_forwarded_for.split(',')[0].strip()
+        # Else, use the normal IP address
+        return request.META.get('REMOTE_ADDR', '')
