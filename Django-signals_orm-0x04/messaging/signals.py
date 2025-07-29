@@ -19,10 +19,13 @@ def log_message_edit(sender, instance, **kwargs):
         try:
             old_msg = Message.objects.get(pk=instance.pk)
             if old_msg.content != instance.content:
+                # Try to detect the user — fallback to None
+                edited_by = getattr(instance, 'edited_by', None)
                 # Save the old version
                 MessageHistory.objects.create(
                     message=instance,
-                    old_content=old_msg.content
+                    old_content=old_msg.content,
+                    edited_by=edited_by
                 )
                 # Mark the message as edited
                 instance.edited = True
