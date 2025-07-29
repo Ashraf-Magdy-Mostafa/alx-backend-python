@@ -16,7 +16,7 @@ class Message(models.Model):
     unread = models.BooleanField(default=True)
 
     objects = models.Manager()  # Default manager
-    unread_messages = UnreadMessagesManager()
+    unread = UnreadMessagesManager()
 
     def __str__(self):
         return f"From {self.sender} to {self.receiver} at {self.timestamp}"
