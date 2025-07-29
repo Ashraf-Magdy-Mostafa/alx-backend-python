@@ -59,6 +59,7 @@ def send_message(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@cache_page(60)
 def threaded_messages(request):
     """
     Return a list of parent messages with all their replies (threaded view).
@@ -90,6 +91,7 @@ def threaded_messages(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@cache_page(60)
 def get_unread_messages(request):
     """
     Returns all unread messages for the logged-in user
