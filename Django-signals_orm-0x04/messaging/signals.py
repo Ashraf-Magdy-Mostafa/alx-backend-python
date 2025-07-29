@@ -1,6 +1,9 @@
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save, pre_save, post_delete
 from django.dispatch import receiver
 from .models import Message, Notification, MessageHistory
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 @receiver(post_save, sender=Message)
@@ -31,3 +34,12 @@ def log_message_edit(sender, instance, **kwargs):
                 instance.edited = True
         except Message.DoesNotExist:
             pass
+
+
+@receiver(post_delete, sender=User)
+def delete_user_related_data(sender, instance, **kwargs):
+    # Cleanup related data manually if not covered by CASCADE
+    Notification.objects.filter(user=instance).delete()
+    Message.objects.filter(sender=instance).delete()
+    Message.objects.filter(receiver=instance).delete()
+    MessageHistory.objects.filter(edited_by=instance).delete()
