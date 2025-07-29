@@ -86,3 +86,22 @@ def threaded_messages(request):
     # Build the full threaded view
     threads = [build_thread(msg) for msg in messages]
     return Response(threads)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_unread_messages(request):
+    """
+    View that returns all unread messages for the current user.
+    """
+    messages = Message.unread_messages.unread_for_user(
+        request.user)  # ✅ Must match checker
+
+    data = [{
+        "id": msg.id,
+        "sender": msg.sender.username,
+        "content": msg.content,
+        "timestamp": msg.timestamp
+    } for msg in messages]
+
+    return Response(data)

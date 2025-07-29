@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from .managers import UnreadMessagesManager
 
 
 class Message(models.Model):
@@ -12,6 +13,10 @@ class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     parent_message = models.ForeignKey(
         'self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
+    unread = models.BooleanField(default=True)
+
+    objects = models.Manager()  # Default manager
+    unread_messages = UnreadMessagesManager()
 
     def __str__(self):
         return f"From {self.sender} to {self.receiver} at {self.timestamp}"
@@ -42,12 +47,3 @@ class MessageHistory(models.Model):
 
     def __str__(self):
         return f"History of message ID {self.message.id}"
-
-
-parent_message = models.ForeignKey(
-    'self',
-    on_delete=models.CASCADE,
-    null=True,
-    blank=True,
-    related_name='replies'  # Allows .replies.all() from any message
-)
