@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Step 1: Scale to 3 replicas
+echo "Scaling the Django app to 3 replicas..."
+kubectl scale deployment django-messaging --replicas=3
+
+# Step 2: Wait until pods are ready
+echo "Waiting for pods to be ready..."
+kubectl rollout status deployment django-messaging
+
+# Step 3: Check pods
+echo "Here are your running pods:"
+kubectl get pods -l app=django-messaging
+
+# Step 4: Port forward so we can test locally
+echo "Starting port forward so we can send requests..."
+kubectl port-forward svc/django-messaging 8000:8000 &
+PF_PID=$!
+sleep 3  # Give it time to start
+
+# Step 5: Load testing (needs wrk installed)
+if command -v wrk >/dev/null 2>&1; then
+  echo "Running load test for 10 seconds..."
+  wrk -t4 -c32 -d10s http://localhost:8000/
+else
+  echo "wrk not installed — skipping load test"
+fi
+
+# Step 6: Show resource usage (needs metrics-server)
+echo "Checking resource usage..."
+kubectl top pods || echo "metrics-server not installed — skipping usage stats"
+
+# Cleanup: Stop port forward
+kill $PF_PID
+echo "Done!"
