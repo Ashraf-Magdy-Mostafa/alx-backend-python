@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# messaging_app/kurbeScript
+# Script to start a Kubernetes cluster with minikube,
+# verify it is running, and list available pods.
+
+set -e
+
+# 1. Check if minikube is installed
+if ! command -v minikube >/dev/null 2>&1; then
+    echo "Error: minikube is not installed."
+    exit 1
+fi
+
+# 2. Start Kubernetes cluster
+echo "Starting Kubernetes cluster with minikube..."
+minikube start
+
+# 3. Verify the cluster is running
+echo "Verifying Kubernetes cluster..."
+kubectl cluster-info
+
+# 4. Retrieve available pods
+echo "Retrieving available pods..."
+kubectl get pods --all-namespaces
