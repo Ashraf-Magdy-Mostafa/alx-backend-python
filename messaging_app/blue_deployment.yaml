@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-messaging-blue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: django-messaging
+      version: blue
+  template:
+    metadata:
+      labels:
+        app: django-messaging
+        version: blue
+    spec:
+      containers:
+        - name: django
+          image: your-django-image:1.0   # BLUE version/tag
+          ports:
+            - containerPort: 8000
