@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Optional: ensure stable Service points to BLUE while we roll it
+kubectl patch service django-messaging \
+  --type merge \
+  -p '{"spec":{"selector":{"app":"django-messaging","version":"blue"}}}' >/dev/null || true
+
+echo "[1/4] Port-forward stable service on :8080"
+kubectl port-forward svc/django-messaging 8080:8000 >/dev/null 2>&1 &
+PF_PID=$!
+sleep 2
+
+echo "[2/4] Start downtime probe (curl every second)"
+TMP_LOG="$(mktemp)"
+(
+  while true; do
+    CODE=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8080/ || echo 000)
+    echo "$(date +%T) HTTP $CODE" | tee -a "$TMP_LOG"
+    sleep 1
+  done
+) &
+CURL_PID=$!
+
+echo "[3/4] Apply updated BLUE deployment (rolling update to image 2.0)"
+kubectl apply -f blue_deployment.yaml
+kubectl rollout status deploy/django-messaging-blue
+
+echo "[4/4] Verify pods after rollout"
+kubectl get pods -l app=django-messaging -o wide
+
+# Stop background jobs
+kill "$CURL_PID" >/dev/null 2>&1 || true
+kill "$PF_PID"   >/dev/null 2>&1 || true
+
+# Quick downtime check: did we ever log a non-200/301/302?
+if grep -E "HTTP (000|4..|5..)" "$TMP_LOG" >/dev/null; then
+  echo ">>> Possible disruption detected (see $TMP_LOG)"
+else
+  echo ">>> No downtime detected (HTTP looked good). Log: $TMP_LOG"
+fi
