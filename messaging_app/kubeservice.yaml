@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-messaging           # stable entry point
+spec:
+  selector:
+    app: django-messaging
+    version: blue                  # start on BLUE
+  ports:
+    - port: 8000
+      targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-messaging-blue      # direct access to BLUE
+spec:
+  selector:
+    app: django-messaging
+    version: blue
+  ports:
+    - port: 8000
+      targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-messaging-green     # direct access to GREEN
+spec:
+  selector:
+    app: django-messaging
+    version: green
+  ports:
+    - port: 8000
+      targetPort: 8000
