@@ -4,7 +4,7 @@ pipeline {
     stage('Checkout') {
       steps {
         // Public repo example; if private, set credentials in the job config.
-        git branch: 'main', url: 'https://github.com/Ashraf-Magdy-Mostafa/alx-backend-python.git'
+        git branch: 'main', url: 'https://github.com/Ashraf-Magdy-Mostafa/alx-backend-python.git', credentialsId: 'github-creds'
       }
     }
     stage('Test') {
@@ -12,9 +12,9 @@ pipeline {
         sh '''
           python -m pip install --upgrade pip || true
           if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
+            pip3 install -r requirements.txt
           else
-            pip install pytest
+            pip3  install pytest
           fi
           pytest --junitxml=pytest.xml
         '''
