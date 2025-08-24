@@ -29,7 +29,6 @@ pipeline {
     }
     stage('Docker Build') {
       steps {
-        // Build using Dockerfile inside messaging_app/
         sh '''
           docker build -t ${DOCKERHUB_REPO}:${IMAGE_TAG} -f messaging_app/Dockerfile messaging_app
         '''
